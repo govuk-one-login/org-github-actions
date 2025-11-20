@@ -1,0 +1,40 @@
+---
+name: Checkov Security Scan
+
+permissions:
+  security-events: write
+  contents: read
+
+on:
+  workflow_call:
+    inputs:
+      config_file:
+        description: 'Path to checkov config file'
+        required: false
+        default: '.checkov.yaml'
+        type: string
+      working_directory:
+        description: 'Working directory for checkov scan'
+        required: false
+        default: '.'
+        type: string
+
+jobs:
+  checkov:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Checkov Github Action
+        uses: bridgecrewio/checkov-action@v12
+        with:
+          output_format: cli,sarif
+          output_file_path: console,results.sarif
+          config_file: ${{ inputs.config_file }}
+          directory: ${{ inputs.working_directory }}
+
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v4
+        if: success() || failure()
+        with:
+          sarif_file: results.sarif

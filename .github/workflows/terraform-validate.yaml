@@ -1,0 +1,80 @@
+---
+name: Terraform Validate
+
+permissions:
+  security-events: write
+  actions: read
+  contents: read
+
+on:
+  workflow_call:
+    inputs:
+      terraform_dir:
+        description: 'Terraform directory to validate'
+        required: false
+        default: 'terraform'
+        type: string
+      tflint_config:
+        description: 'Path to TFLint config file'
+        required: false
+        default: '.tflint.hcl'
+        type: string
+      terraform_version:
+        description: 'Terraform version to use'
+        required: false
+        default: '1.13.3'
+        type: string
+      tflint_version:
+        description: 'TFLint version to use'
+        required: false
+        default: 'v0.50.3'
+        type: string
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ inputs.terraform_dir }}
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ inputs.terraform_version }}
+
+      - name: Init Terraform
+        run: terraform init -backend=false
+
+      - name: Format
+        run: terraform fmt -check -recursive
+
+      - name: Validate
+        run: terraform validate
+
+  tflint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ inputs.terraform_dir }}
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - uses: terraform-linters/setup-tflint@v4
+        name: Setup TFLint
+        with:
+          tflint_version: ${{ inputs.tflint_version }}
+
+      - name: Show version
+        run: tflint --version
+
+      - name: Init TFLint
+        run: tflint --init
+
+      - name: Run TFLint
+        run: tflint -f compact
