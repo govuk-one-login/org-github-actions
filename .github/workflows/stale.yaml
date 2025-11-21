@@ -1,0 +1,41 @@
+---
+name: "Close Stale PRs"
+
+permissions:
+  issues: write
+  pull-requests: write
+
+on:
+  workflow_call:
+    inputs:
+      days_before_stale:
+        description: "Number of days before a PR is considered stale"
+        required: false
+        default: "3"
+      days_before_close:
+        description: "Number of days before a stale PR is closed"
+        required: false
+        default: "7"
+      remove_stale_when_updated:
+        description: "Remove the stale label when the PR is updated"
+        required: false
+        default: "true"
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Close Stale PRs
+        uses: actions/stale@v10
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          stale-pr-message: >
+            This PR has been automatically marked as stale because it has
+            not had any activity in the last 3 days. It will be closed in
+            4 days if no further activity occurs.
+          close-pr-message: >
+            This PR has been closed due to inactivity in the last 7 days.
+          days-before-pr-stale: ${{ inputs.days_before_stale }}
+          days-before-pr-close: ${{ inputs.days_before_close }}
+          stale-pr-label: "STALE"
+          remove-stale-when-updated: ${{ inputs.remove_stale_when_updated }}
