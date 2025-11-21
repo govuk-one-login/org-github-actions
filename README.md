@@ -12,7 +12,7 @@ Runs Checkov security scanning with SARIF output for GitHub Security tab integra
 ```yaml
 jobs:
   checkov:
-    uses: govuk-one-login/org-github-actions/.github/workflows/checkov.yaml@main
+    uses: govuk-one-login/org-github-actions/.github/workflows/checkov.yaml@v1
     with:
       config_file: .checkov.yaml        # Optional, defaults to '.checkov.yaml'
       working_directory: terraform      # Optional, defaults to '.'
@@ -22,7 +22,7 @@ jobs:
 ```yaml
 jobs:
   checkov:
-    uses: govuk-one-login/org-github-actions/.github/workflows/checkov.yaml@main
+    uses: govuk-one-login/org-github-actions/.github/workflows/checkov.yaml@v1
 ```
 
 ### Terraform Validate
@@ -33,7 +33,7 @@ Runs Terraform formatting, validation, and TFLint checks.
 ```yaml
 jobs:
   terraform-validate:
-    uses: govuk-one-login/org-github-actions/.github/workflows/terraform-validate.yaml@main
+    uses: govuk-one-login/org-github-actions/.github/workflows/terraform-validate.yaml@v1
     with:
       terraform_dir: terraform         # Optional, defaults to 'terraform'
       tflint_config: .tflint.hcl      # Optional, defaults to '.tflint.hcl'
@@ -45,27 +45,7 @@ jobs:
 ```yaml
 jobs:
   terraform-validate:
-    uses: govuk-one-login/org-github-actions/.github/workflows/terraform-validate.yaml@main
-```
-
-## Migration from ct-aws-sample-pipeline
-
-Replace your existing workflow calls:
-
-**Before:**
-```yaml
-terraform-validate:
-  uses: ./.github/workflows/terraform-validate.yaml
-  with:
-    terraform_dir: terraform
-```
-
-**After:**
-```yaml
-terraform-validate:
-  uses: govuk-one-login/org-github-actions/.github/workflows/terraform-validate.yaml@main
-  with:
-    terraform_dir: terraform
+    uses: govuk-one-login/org-github-actions/.github/workflows/terraform-validate.yaml@v1
 ```
 
 ## Versioning Strategy
