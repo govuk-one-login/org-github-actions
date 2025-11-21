@@ -4,6 +4,7 @@ name: Checkov Security Scan
 permissions:
   security-events: write
   contents: read
+  actions: read
 
 on:
   workflow_call:
