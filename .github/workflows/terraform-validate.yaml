@@ -33,48 +33,23 @@ on:
 jobs:
   terraform:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: ${{ inputs.terraform_dir }}
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v5
+      
+      - name: Checkout org-github-actions
+        uses: actions/checkout@v5
+        with:
+          repository: govuk-one-login/org-github-actions
+          ref: ${{ github.action_ref }}
+          path: .github-actions
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
+      - uses: ./.github-actions/terraform
         with:
           terraform_version: ${{ inputs.terraform_version }}
+          terraform_dir: ${{ inputs.terraform_dir }}
 
-      - name: Init Terraform
-        run: terraform init -backend=false
-
-      - name: Format
-        run: terraform fmt -check -recursive
-
-      - name: Validate
-        run: terraform validate
-
-  tflint:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: ${{ inputs.terraform_dir }}
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v4
-
-      - uses: terraform-linters/setup-tflint@v4
-        name: Setup TFLint
+      - uses: ./.github-actions/tflint
         with:
           tflint_version: ${{ inputs.tflint_version }}
-
-      - name: Show version
-        run: tflint --version
-
-      - name: Init TFLint
-        run: tflint --init
-
-      - name: Run TFLint
-        run: tflint -f compact
+          terraform_dir: ${{ inputs.terraform_dir }}
+          tflint_config: ${{ inputs.tflint_config }}
