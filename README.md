@@ -48,6 +48,28 @@ jobs:
     uses: govuk-one-login/org-github-actions/.github/workflows/terraform-validate.yaml@v1
 ```
 
+## Composable actions
+
+These actions can be composed into a custom workflow so we can extend the
+default workflows with additional behaviors
+
+### Generate Policy Wrappers
+
+Generates CloudFormation wrappers for IAM policy template files to enable security scanning.
+
+**Usage:**
+```yaml
+jobs:
+  checkov:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: govuk-one-login/org-github-actions/wrap-iam-policiess.yaml@v1
+        with:
+          policy_directory: terraform/policies  # Optional, defaults to 'terraform
+      - uses: govuk-one-login/org-github-actions/checkov@v1
+    
+```
+
 ## Versioning Strategy
 
 ### Production Repositories

@@ -1,0 +1,13 @@
+name: 'Wrap IAM Policies'
+description: 'Generate CloudFormation wrappers for IAM policy template files'
+inputs:
+  policy_directory:
+    description: 'Directory containing policy files to wrap'
+    required: false
+    default: 'terraform/policies'
+runs:
+  using: 'composite'
+  steps:
+    - name: Generate Policy Wrappers
+      run: bash ${{ github.action_path }}/../scripts/generate-policy-wrappers.sh "${{ inputs.policy_directory }}"
+      shell: bash
