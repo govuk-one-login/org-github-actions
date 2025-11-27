@@ -63,7 +63,7 @@ jobs:
   checkov:
     runs-on: ubuntu-latest
     steps:
-      - uses: govuk-one-login/org-github-actions/wrap-iam-policiess.yaml@v1
+      - uses: govuk-one-login/org-github-actions/wrap-iam-policies@v1
         with:
           policy_directory: terraform/policies  # Optional, defaults to 'terraform
       - uses: govuk-one-login/org-github-actions/checkov@v1
