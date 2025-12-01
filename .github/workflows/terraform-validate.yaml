@@ -34,10 +34,10 @@ jobs:
   terraform:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v4
       
       - name: Checkout org-github-actions
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
         with:
           repository: govuk-one-login/org-github-actions
           ref: ${{ github.action_ref }}
