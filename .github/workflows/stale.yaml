@@ -12,14 +12,17 @@ on:
         description: "Number of days before a PR is considered stale"
         required: false
         default: "3"
+        type: number
       days_before_close:
         description: "Number of days before a stale PR is closed"
         required: false
         default: "7"
+        type: number
       remove_stale_when_updated:
         description: "Remove the stale label when the PR is updated"
         required: false
         default: "true"
+        type: boolean
 
 jobs:
   stale:
