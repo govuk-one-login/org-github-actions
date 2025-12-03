@@ -32,10 +32,10 @@ jobs:
           repository: govuk-one-login/org-github-actions
           # ref: ${{ github.workflow_ref.split('@')[1] }}
           path: .github-actions
-      
-      - name: Debug - List all files
-        run: find . -type f ! -path '*/.git/*' | sort
-      
+
+      - name: debugging
+        run: find . -type f ! -path '*/.git/*'
+
       - uses: ./.github-actions/checkov
         with:
           config_file: ${{ inputs.config_file }}
