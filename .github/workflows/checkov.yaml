@@ -33,6 +33,9 @@ jobs:
           # ref: ${{ github.workflow_ref.split('@')[1] }}
           path: .github-actions
       
+      - name: Debug - List all files
+        run: find . -type f ! -path '*/.git/*' | sort
+      
       - uses: ./.github-actions/checkov
         with:
           config_file: ${{ inputs.config_file }}
