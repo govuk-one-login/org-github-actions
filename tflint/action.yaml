@@ -1,0 +1,38 @@
+name: 'tflint'
+description: 'Run Terraform linting'
+inputs:
+  tflint_version:
+    description: 'TFLint version to use'
+    required: false
+    default: 'v0.50.3'
+    type: string
+  terraform_dir:
+    description: 'Terraform directory to validate'
+    required: false
+    default: 'terraform'
+    type: string
+  tflint_config:
+    description: 'Path to TFLint config file'
+    required: false
+    default: '.tflint.hcl'
+    type: string
+runs:
+  using: 'composite'
+  defaults:
+    run:
+      shell: bash
+      working-directory: ${{ inputs.terraform_dir }}
+  steps:
+    - uses: terraform-linters/setup-tflint@v4
+      name: Setup TFLint
+      with:
+        tflint_version: ${{ inputs.tflint_version }}
+
+    - name: Show version
+      run: tflint --version
+
+    - name: Init TFLint
+      run: tflint --init
+
+    - name: Run TFLint
+      run: tflint -c ${{ inputs.tflint_config }} -f compact
