@@ -18,10 +18,6 @@ inputs:
     type: string
 runs:
   using: 'composite'
-  defaults:
-    run:
-      shell: bash
-      working-directory: ${{ inputs.terraform_dir }}
   steps:
     - uses: terraform-linters/setup-tflint@v4
       name: Setup TFLint
