@@ -36,6 +36,12 @@ jobs:
       - name: debugging
         run: find . -type f ! -path '*/.git/*'
 
+      - name: Additional debugging
+        run: |
+          echo $GITHUB_WORKFLOW_SHA \
+          echo $GITHUB_WORKFLOW_REF 
+
+
       - uses: ./.github-actions/checkov
         with:
           config_file: ${{ inputs.config_file }}
