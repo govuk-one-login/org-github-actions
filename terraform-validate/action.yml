@@ -1,0 +1,32 @@
+name: terraform
+description: 'Run Terraform validation'
+inputs:
+  terraform_version:
+    description: 'Terraform version to use'
+    required: false
+    default: '1.13.3'
+    type: string
+  terraform_dir:
+    description: 'Terraform directory to validate'
+    required: false
+    default: 'terraform'
+    type: string
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: ${{ inputs.terraform_version }}
+
+    - name: Init Terraform
+      run: terraform init -backend=false
+      shell: bash
+
+    - name: Format
+      run: terraform fmt -check -recursive
+      shell: bash
+
+    - name: Validate
+      run: terraform validate
+      shell: bash
