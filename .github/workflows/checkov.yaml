@@ -26,22 +26,47 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Get workflow version
-        id: workflow-version
-        uses: canonical/get-workflow-version-action@v1
-        with:
-          repository-name: govuk-one-login/org-github-actions
-          file-name: checkov.yaml
+      # - name: Get workflow version
+      #   id: workflow-version
+      #   uses: canonical/get-workflow-version-action@v1
+      #   with:
+      #     repository-name: govuk-one-login/org-github-actions
+      #     file-name: checkov.yaml
       
-      - name: Test new action
+      # - name: Test new action
+      #   run: |
+      #     echo "Workflow version: ${{ steps.workflow-version.outputs.sha }}"
+
+      - name: Get workflow reference
+        id: workflows-ref
         run: |
-          echo "Workflow version: ${{ steps.workflow-version.outputs.sha }}"
+            # This variable is manipulated by the two expansions
+            workflow_ref=${{ github.workflow_ref }}
+
+            # Delete the repository from the front of worklow ref
+            workflow_path="${workflow_ref#"${{ github.repository }}/"}"
+
+            # Delete the rep ref from anywhere in the workflow path
+            workflow_path="${workflow_path%"@${{ github.ref }}"}"
+
+            caller_reference="$(grep "${workflow_name}" "${workflow_path}")"
+
+            ## If this starts with ./, then just use the current ref
+            echo "caller reference=${caller_reference}"
+            if [[ "${caller_reference}" == *"./.github/workflows"* ]]; then
+              sha="${{ github.ref }}"
+            else
+              sha="$(echo "${caller_reference}" | cut -d"@" -f2)"
+              # trim anything after the version term (spaces)
+              sha="$(echo "${sha}" | cut -d" " -f1)"
+            fi
+            echo "sha=${sha}" >> "${GITHUB_OUTPUT}"
       
       - name: Checkout org-github-actions
         uses: actions/checkout@v5
         with:
           repository: govuk-one-login/org-github-actions
-          ref: ${{ github.job_workflow_sha  }}
+          ref: ${{ steps.workflows-ref.outputs.sha }}
           path: .github-actions
 
       - name: debugging
