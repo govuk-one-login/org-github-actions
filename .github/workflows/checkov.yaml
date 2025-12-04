@@ -62,11 +62,17 @@ jobs:
             fi
             echo "sha=${sha}" >> "${GITHUB_OUTPUT}"
       
+      - name: Test
+        run: |
+          echo ${{ github.workflow_ref }}
+          echo ${{ steps.workflows-ref.outputs.sha }}
+          echo ${{ steps.workflows-ref.outputs.ref }}
+      
       - name: Checkout org-github-actions
         uses: actions/checkout@v5
         with:
           repository: govuk-one-login/org-github-actions
-          ref: ${{ steps.workflows-ref.outputs.sha }}
+          # ref: ${{ steps.workflows-ref.outputs.sha }}
           path: .github-actions
 
       - name: debugging
