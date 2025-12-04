@@ -21,9 +21,12 @@ runs:
 
     - name: Init Terraform
       run: terraform init -backend=false
+      shell: bash
 
     - name: Format
       run: terraform fmt -check -recursive
+      shell: bash
 
     - name: Validate
       run: terraform validate
+      shell: bash

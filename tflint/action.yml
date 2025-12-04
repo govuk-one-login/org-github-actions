@@ -26,9 +26,12 @@ runs:
 
     - name: Show version
       run: tflint --version
+      shell: bash
 
     - name: Init TFLint
       run: tflint --init
+      shell: bash
 
     - name: Run TFLint
       run: tflint -c ${{ inputs.tflint_config }} -f compact
+      shell: bash

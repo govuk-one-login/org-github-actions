@@ -29,6 +29,8 @@ runs:
 
       - name: Install pre-commit
         run: pip install pre-commit
+        shell: bash
 
       - name: Run pre-commit
         run: pre-commit run --all-files ${{inputs.pre-commit-tasks}}
+        shell: bash
