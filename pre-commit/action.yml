@@ -1,0 +1,36 @@
+name: pre-commit
+description: 'Run pre-commit tasks'
+inputs:
+  python-version:
+    description: 'Python version to use'
+    required: false
+    default: '3.13'
+    type: string
+  working_directory:
+    description: 'Working directory for pre-commit checks'
+    required: false
+    default: '.'
+  pre-commit-tasks:
+    description: 'List of tasks to run'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ inputs.python-version }}
+
+      - name: Cache pre-commit hooks
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pre-commit
+          key: ${{ runner.os }}-precommit-${{ hashFiles('.pre-commit-config.yaml') }}
+
+      - name: Install pre-commit
+        run: pip install pre-commit
+        shell: bash
+
+      - name: Run pre-commit
+        run: pre-commit run --all-files ${{inputs.pre-commit-tasks}}
+        shell: bash
