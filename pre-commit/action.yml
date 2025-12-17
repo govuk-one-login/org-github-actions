@@ -11,7 +11,7 @@ inputs:
     required: false
     default: '.'
   pre-commit-tasks:
-    description: 'List of tasks to run'
+    description: 'Comma separated list of tasks to run, or single task name'
     required: true
 runs:
   using: 'composite'
