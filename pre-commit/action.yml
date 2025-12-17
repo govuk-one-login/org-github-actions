@@ -11,7 +11,7 @@ inputs:
     required: false
     default: '.'
   pre-commit-tasks:
-    description: 'List of tasks to run'
+    description: 'Comma separated list of tasks to run, or single task name'
     required: true
 runs:
   using: 'composite'
@@ -32,5 +32,18 @@ runs:
         shell: bash
 
       - name: Run pre-commit
-        run: pre-commit run --all-files ${{inputs.pre-commit-tasks}}
+        run: |
+          IFS=',' read -ra TASK_NAMES <<< "${{ inputs.pre-commit-tasks }}"
+
+          for task in "${TASK_NAMES[@]}"; do
+            task="$(echo "$task" | xargs)"  # trim whitespace
+
+            if [[ -z "$task" ]]; then
+              echo "Empty pre-commit task detected" >&2
+              exit 1
+            fi
+
+            echo "Running pre-commit task: $task"
+            pre-commit run --all-files "$task"
+          done
         shell: bash

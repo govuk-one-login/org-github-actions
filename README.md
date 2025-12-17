@@ -105,6 +105,8 @@ Runs specific pre-commit tasks defined within the calling repository.
 
 > Note: pre-commit must be set up within the calling repository (i.e. it should have a `.pre-commit-config.yaml`) to use this action.
 
+To run multiple `pre-commit-tasks`, pass in a comma seperated list of task ids.
+
 **Usage:**
 ```yaml
 jobs:
