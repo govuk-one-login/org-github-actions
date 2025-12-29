@@ -11,10 +11,8 @@ inputs:
     default: '.'
 runs:
   using: 'composite'
-  defaults:
-    run:
-      shell: bash
-      working-directory: ${{ inputs.terraform_dir }}
   steps:
     - name: Generate Policy Wrappers
       run: bash ${{ github.action_path }}/scripts/generate-policy-wrappers.sh "${{ inputs.policy_directory }}"
+      shell: bash
+      working-directory: ${{ inputs.working_directory }}
