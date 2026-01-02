@@ -41,6 +41,41 @@ jobs:
       - uses: govuk-one-login/org-github-actions/checkov@v1
 ```
 
+### wrap-iam-policies
+
+Generates CloudFormation wrappers for IAM policy template files, allowing them to be checked by tools such as Checkov.
+
+**Usage:**
+```yaml
+jobs:
+  checkov-with-wrap-iam-policies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: govuk-one-login/org-github-actions/wrap-iam-policies@v1
+        with:
+          policy_directory: 'terraform/policies'    # Optional, defaults to 'terraform/policies'
+          working_directory: '.'                    # Optional, defaults to '.'
+      - uses: govuk-one-login/org-github-actions/checkov@v1
+        with:
+          working_directory: terraform
+```
+
+> Note: 
+>
+> For the above example to work, the `policy_directory` of `wrap-iam-policies` must be within the `working_directory` of `checkov` 
+
+**Minimal usage (uses defaults):**
+```yaml
+jobs:
+  wrap-iam-policies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: govuk-one-login/org-github-actions/wrap-iam-policies@v1
+```
+
+
 ### Terraform Validate
 
 Runs Terraform formatting and validation checks.
