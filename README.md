@@ -152,7 +152,6 @@ jobs:
       - uses: govuk-one-login/org-github-actions/pre-commit@v1
         with:
           python-version: 3.13                             # Optional, defaults to '3.13'
-          working_directory: .                             # Optional, defaults to '.'
           pre-commit-tasks: yamllint, trailing-whitespace  # Requried, must match id of existing pre-commit hook(s)
 ```
 
