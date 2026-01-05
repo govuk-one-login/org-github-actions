@@ -145,27 +145,27 @@ To run multiple `pre-commit-tasks`, pass in a comma seperated list of task ids.
 **Usage:**
 ```yaml
 jobs:
-  tflint:
+  pre-commit:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
       - uses: govuk-one-login/org-github-actions/pre-commit@v1
         with:
-          - python-version: 3.13          # Optional, defaults to '3.13'
-          - working_directory: .          # Optional, defaults to '.'
-          - pre-commit-tasks: yamllint    # Requried, must match id of existing pre-commit hook
+          python-version: 3.13                             # Optional, defaults to '3.13'
+          working_directory: .                             # Optional, defaults to '.'
+          pre-commit-tasks: yamllint, trailing-whitespace  # Requried, must match id of existing pre-commit hook(s)
 ```
 
 **Minimal usage (uses defaults):**
 ```yaml
 jobs:
-  tflint:
+  pre-commit:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
       - uses: govuk-one-login/org-github-actions/pre-commit@v1
         with:
-          - pre-commit-tasks: yamllint
+          pre-commit-tasks: yamllint
 ```
 
 ## Versioning Strategy
