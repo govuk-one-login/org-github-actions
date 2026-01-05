@@ -27,11 +27,14 @@ runs:
     - name: Show version
       run: tflint --version
       shell: bash
+      working-directory: ${{ inputs.terraform_dir }}
 
     - name: Init TFLint
-      run: tflint --init
+      run: tflint --init -c "${{ github.workspace }}/${{ inputs.tflint_config }}"
       shell: bash
+      working-directory: ${{ inputs.terraform_dir }}
 
     - name: Run TFLint
-      run: tflint -c ${{ inputs.tflint_config }} -f compact
+      run: tflint -c "${{ github.workspace }}/${{ inputs.tflint_config }}" -f compact
       shell: bash
+      working-directory: ${{ inputs.terraform_dir }}

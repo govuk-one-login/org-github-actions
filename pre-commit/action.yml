@@ -6,10 +6,6 @@ inputs:
     required: false
     default: '3.13'
     type: string
-  working_directory:
-    description: 'Working directory for pre-commit checks'
-    required: false
-    default: '.'
   pre-commit-tasks:
     description: 'Comma separated list of tasks to run, or single task name'
     required: true
