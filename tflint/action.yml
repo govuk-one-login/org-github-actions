@@ -23,7 +23,7 @@ runs:
       name: Setup TFLint
       with:
         tflint_version: ${{ inputs.tflint_version }}
-        working-directory: ${{ inputs.terraform_dir }}
+        tflint_config_path: "${{ github.workspace }}/${{ inputs.tflint_config }}"
 
     - name: Show version
       run: tflint --version
