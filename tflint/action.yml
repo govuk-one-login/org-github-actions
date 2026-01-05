@@ -31,7 +31,9 @@ runs:
     - name: Init TFLint
       run: tflint --init
       shell: bash
+      working-directory: ${{ inputs.terraform_dir }}
 
     - name: Run TFLint
-      run: tflint -c ${{ inputs.tflint_config }} -f compact
+      run: tflint -c "${{ github.workspace }}/${{ inputs.tflint_config }}" -f compact
       shell: bash
+      working-directory: ${{ inputs.terraform_dir }}
