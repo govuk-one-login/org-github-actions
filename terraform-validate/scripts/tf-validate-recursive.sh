@@ -19,7 +19,7 @@ echo "${dirs}" | while read -r dir; do
   (
     cd "${dir}"
     echo "Initalising Terraform"
-    terraform init -backend=false
+    terraform init -backend=false -lockfile=readonly
     echo "Validating Terraform"
     terraform validate
   )
