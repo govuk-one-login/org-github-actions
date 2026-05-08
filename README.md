@@ -91,7 +91,10 @@ jobs:
         with:
           terraform_dir: terraform         # Optional, defaults to 'terraform'
           terraform_version: 1.13.3        # Optional, defaults to '1.13.3'
+          recursive_validate: true         # Optional, defaults to false
 ```
+
+> `recursive_validate` can be used to initalise and validate terraform in multiple sub folders. This will look for all folders containing `.tf` files (excluding `modules` folders as they will fail without values for their variables).
 
 **Minimal usage (uses defaults):**
 ```yaml

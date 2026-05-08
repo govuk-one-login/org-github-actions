@@ -11,18 +11,17 @@ inputs:
     required: false
     default: 'terraform'
     type: string
+  recursive_validate:
+    description: 'Validate all Terraform subdirectories'
+    required: false
+    default: 'false'
 runs:
   using: 'composite'
   steps:
     - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v3
+      uses: hashicorp/setup-terraform@v4
       with:
         terraform_version: ${{ inputs.terraform_version }}
-
-    - name: Init Terraform
-      run: terraform init -backend=false
-      shell: bash
-      working-directory: ${{ inputs.terraform_dir }}
 
     - name: Format
       run: terraform fmt -check -recursive
@@ -30,6 +29,15 @@ runs:
       working-directory: ${{ inputs.terraform_dir }}
 
     - name: Validate
-      run: terraform validate
+      if: ${{ inputs.recursive_validate == 'false' }}
+      run: |
+        terraform init -backend=false
+        terraform validate
       shell: bash
       working-directory: ${{ inputs.terraform_dir }}
+
+    - name: Recursive Validate
+      if: ${{ inputs.recursive_validate == 'true' }}
+      run: |
+        ${{ github.action_path }}/scripts/tf-validate-recursive.sh ${{ inputs.terraform_dir }}
+      shell: bash
