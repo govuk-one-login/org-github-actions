@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$1"
-export TF_PLUGIN_CACHE_DIR="${HOME}/tmp/terraform-plugin-cache"
+export TF_PLUGIN_CACHE_DIR="/tmp/terraform-plugin-cache"
 mkdir -p "${TF_PLUGIN_CACHE_DIR}"
 
 dirs=$(find "${ROOT_DIR}" -type f -name '*.tf' -not -path '*/.terraform/*' -not -path '*/modules/*' \
