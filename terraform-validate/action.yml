@@ -39,5 +39,6 @@ runs:
     - name: Recursive Validate
       if: ${{ inputs.recursive_validate == 'true' }}
       run: |
-        ./scripts/tf-validate-recursive.sh ${{ inputs.terraform_dir }}
+        # ./scripts/tf-validate-recursive.sh ${{ inputs.terraform_dir }
+        ${{ github.action_path }}/scripts/tf-validate-recursive.sh ${{ inputs.terraform_dir }}
       shell: bash
