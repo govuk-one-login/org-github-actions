@@ -8,7 +8,10 @@ inputs:
     type: string
   pre-commit-tasks:
     description: 'Comma separated list of tasks to run, or single task name'
-    required: true
+    required: false
+  tasks-to-skip: 
+    description: 'Comma separated list of tasks to skip'
+    required: false
 runs:
   using: 'composite'
   steps:
@@ -28,18 +31,19 @@ runs:
         shell: bash
 
       - name: Run pre-commit
+        env:
+          SKIP: ${{ inputs.tasks-to-skip }}
         run: |
-          IFS=',' read -ra TASK_NAMES <<< "${{ inputs.pre-commit-tasks }}"
+          if [[ -n "${{ inputs.pre-commit-tasks }}" ]]; then
+            IFS=',' read -ra TASK_NAMES <<< "${{ inputs.pre-commit-tasks }}"
 
-          for task in "${TASK_NAMES[@]}"; do
-            task="$(echo "$task" | xargs)"  # trim whitespace
+            for task in "${TASK_NAMES[@]}"; do
+              task="$(echo "$task" | xargs)"  # trim whitespace
 
-            if [[ -z "$task" ]]; then
-              echo "Empty pre-commit task detected" >&2
-              exit 1
-            fi
-
-            echo "Running pre-commit task: $task"
-            pre-commit run --all-files "$task"
-          done
+              echo "Running pre-commit task: $task"
+              pre-commit run --all-files "$task"
+            done
+          else
+            pre-commit run --all-files
+          fi
         shell: bash
