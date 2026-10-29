@@ -1,4 +1,9 @@
-# Organization GitHub Actions
+# (DEPRECATED) Organization GitHub Actions
+
+> [!IMPORTANT]
+> This repository has been archived and should not be used
+>
+> Please use [govuk-one-login/github-actions](https://github.com/govuk-one-login/github-actions) instead
 
 Reusable GitHub Actions workflows for GDS Digital Identity AWS infrastructure repositories.
 
